@@ -1,0 +1,489 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Oct 28, 2025 at 10:01 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `cat_shop`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `pet_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_read` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `pet_id`, `sender_id`, `receiver_id`, `message`, `created_at`, `is_read`) VALUES
+(1, 15, 5, 2, 'hello', '2025-09-22 05:34:34', 1),
+(2, 15, 5, 2, 'heyheyhey', '2025-09-28 08:54:51', 1),
+(3, 15, 2, 5, 'damn', '2025-09-28 08:58:35', 1),
+(4, 15, 5, 2, 'what the helly', '2025-09-28 09:01:31', 1),
+(5, 15, 5, 2, 'pyramids', '2025-09-28 09:03:44', 1),
+(6, 15, 5, 2, 'boeng', '2025-09-28 09:16:59', 1),
+(7, 15, 5, 2, 'takemybreath', '2025-09-28 09:18:10', 1),
+(8, 15, 2, 5, 'WAHAHAHAHA', '2025-09-28 09:19:33', 1),
+(9, 15, 2, 5, 'BOeng', '2025-09-28 09:19:45', 1),
+(10, 15, 5, 2, 'are you okay?', '2025-09-28 09:26:24', 1),
+(11, 15, 5, 2, 'out of time', '2025-09-28 09:29:36', 1),
+(12, 15, 5, 2, 'grashshahasdh', '2025-09-28 10:15:42', 1),
+(13, 15, 9, 2, 'hello', '2025-09-29 06:35:31', 1),
+(14, 15, 2, 9, 'hello siers', '2025-09-29 06:36:27', 1),
+(15, 15, 5, 2, 'aaa', '2025-10-01 07:45:55', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` enum('Pending','Paid','Shipped','Completed','Cancelled') DEFAULT 'Pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pets`
+--
+
+CREATE TABLE `pets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `breed` varchar(100) DEFAULT NULL,
+  `age` varchar(50) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `latitude` varchar(50) DEFAULT NULL,
+  `longitude` varchar(50) DEFAULT NULL,
+  `address` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pets`
+--
+
+INSERT INTO `pets` (`id`, `user_id`, `name`, `type`, `breed`, `age`, `description`, `price`, `image`, `created_at`, `latitude`, `longitude`, `address`) VALUES
+(1, 2, ' Pham Hanni', 'cat', 'Persian Otter', '21', 'I love her so much', 17.00, '1755753546_0d671b9ff913bda362b57c63b3bae486.jpg', '2025-08-21 05:19:06', NULL, NULL, NULL),
+(2, 2, 'kitty', 'cat', 'idk', '4', 'sad', 4.00, '1755754090_93612b1be5083b820924bb851dbeaaf5.jpg', '2025-08-21 05:28:10', NULL, NULL, NULL),
+(3, 2, 'sakurajima', 'cat', 'bunny', '17', 'a cute bunny girl', 100.00, '1755775398_f797d4d42a1fffdc48c3427ba0176c2e.jpg', '2025-08-21 11:23:18', NULL, NULL, NULL),
+(4, 2, 'yorushika', 'cat', 'japanese', '20', 'I love this artist', 3.00, NULL, '2025-08-27 04:58:34', NULL, NULL, NULL),
+(7, 2, 'Ngoc Han', 'cat', 'Ino', '99', 'crush ko tong eabab na to', 169.00, NULL, '2025-08-27 05:05:25', NULL, NULL, NULL),
+(8, 2, 'summer', 'cat', 'Persian Otter', '21', 'shiny', 888.00, NULL, '2025-09-07 06:39:30', NULL, NULL, NULL),
+(10, 2, 'Caroline', 'cat', 'American Shorthair', '5', 'music lover', 4000.00, NULL, '2025-09-20 01:19:24', NULL, NULL, NULL),
+(11, 2, 'Shibal', '', 'Maine Coon', '17', 'Part of the band', 2000.00, NULL, '2025-09-20 01:36:16', '', '0', ''),
+(12, 2, 'becky', '', 'Bombay', '2', 'bading', 9999.00, NULL, '2025-09-20 01:58:59', '7.0703101153421635', '125.61263322830202', 'Christ for All Nations Cathedral, 202, M. Roxas Avenue, Barangay 34-D, Poblacion District, Davao City, Davao Region, 8000, Philippines'),
+(13, 2, 'Posang cute', '', 'Cornish Rex', '4', 'Human too', 1975.00, NULL, '2025-09-20 02:02:36', '', '0', ''),
+(14, 2, 'mamamiming', '', 'American Curl', '4', 'mother', 1234.00, NULL, '2025-09-20 02:24:30', '7.0351976383323604', '125.51097214221956', 'Capili Subdivision, Dumoy, Talomo District, Davao City, Davao Region, 8000, Philippines'),
+(15, 2, 'You and I', '', 'Burmese', '5', 'to the sky', 123213.00, NULL, '2025-09-20 02:29:45', '7.044855327992125', '125.53578794002534', 'Caribbean Sea Street, Gulf View Executive Homes, Bago Aplaya, Talomo District, Davao City, Davao Region, 8000, Philippines');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pet_images`
+--
+
+CREATE TABLE `pet_images` (
+  `id` int(11) NOT NULL,
+  `pet_id` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pet_images`
+--
+
+INSERT INTO `pet_images` (`id`, `pet_id`, `filename`) VALUES
+(1, 4, '1756270714_07fc6a08e3ccc9105a466e25c9925aae.jpg'),
+(2, 4, '1756270714_3335761927dee97d71592a21b1458bf1.jpg'),
+(3, 4, '1756270714_d9fd297eeb4063f3cf107f8f006f5039.jpg'),
+(4, 7, '1756271125_0d671b9ff913bda362b57c63b3bae486.jpg'),
+(5, 7, '1756271125_48619f5227928df9c637559a46f1f24d - Copy.jpg'),
+(6, 7, '1756271125_48619f5227928df9c637559a46f1f24d.jpg'),
+(7, 7, '1756271125_b66a1d48091246cca3e2992bb78b4524.jpg'),
+(8, 8, '1757227170_07fc6a08e3ccc9105a466e25c9925aae.jpg'),
+(9, 8, '1757227170_3335761927dee97d71592a21b1458bf1 - Copy.jpg'),
+(10, 8, '1757227170_d9fd297eeb4063f3cf107f8f006f5039.jpg'),
+(13, 10, '1758331164_402471d047d9c21bae814cc3fa7e91a9.jpg'),
+(14, 10, '1758331164_c14232705bbcc5c339b7632fd42dcc4c.jpg'),
+(15, 11, '1758332176_539d164fbf5e27f589aeeab811619d97.jpg'),
+(16, 11, '1758332176_402471d047d9c21bae814cc3fa7e91a9.jpg'),
+(17, 12, '1758333539_402471d047d9c21bae814cc3fa7e91a9.jpg'),
+(18, 12, '1758333539_cd2672ffd09bcb2fc57ed95f7343f2b3.jpg'),
+(19, 13, '1758333756_402471d047d9c21bae814cc3fa7e91a9.jpg'),
+(20, 13, '1758333756_c14232705bbcc5c339b7632fd42dcc4c.jpg'),
+(21, 13, '1758333756_cd2672ffd09bcb2fc57ed95f7343f2b3.jpg'),
+(22, 14, '1758335070_a04b098425d2bfff62af0ac91ec3f3df.jpg'),
+(23, 14, '1758335070_c14232705bbcc5c339b7632fd42dcc4c.jpg'),
+(24, 14, '1758335070_cd2672ffd09bcb2fc57ed95f7343f2b3.jpg'),
+(25, 14, '1758335070_f71f6fdca6fd8823cb34e345c3cbec2a.jpg'),
+(26, 15, '1758335385_cd2672ffd09bcb2fc57ed95f7343f2b3.jpg'),
+(27, 15, '1758335385_f71f6fdca6fd8823cb34e345c3cbec2a.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `category` enum('cat','accessory') DEFAULT 'cat',
+  `breed` varchar(120) DEFAULT NULL,
+  `age_months` int(11) DEFAULT 0,
+  `stock` int(11) DEFAULT 1,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `category`, `breed`, `age_months`, `stock`, `image`, `created_at`) VALUES
+(1, 'Mochi', 'Playful Scottish Fold kitten', 12000.00, 'cat', 'Scottish Fold', 3, 1, 'mochi.jpg', '2025-08-19 06:13:50'),
+(2, 'Luna', 'Calm Ragdoll, vaccinated', 15000.00, 'cat', 'Ragdoll', 7, 1, 'luna.jpg', '2025-08-19 06:13:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('customer','admin') DEFAULT 'customer',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `verified` tinyint(1) NOT NULL DEFAULT 0,
+  `id_image` varchar(255) DEFAULT NULL,
+  `verification_status` enum('pending','verified','rejected') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `role`, `created_at`, `verified`, `id_image`, `verification_status`) VALUES
+(1, '', '', 'admin', 'admin@catshop.local', '$2y$10$zNjCOsEoUGomTXinPC01AObTdD6Ikhm2GnkbwsJDi36mcuhGa1IlS', 'admin', '2025-08-19 06:20:03', 0, NULL, 'pending'),
+(2, '', '', 'test', 'test@gmail.com', '$2y$10$MBuWxPGVcV8V5qoebUYq/uJmEouf77HB8FGjB8AhfIA/WEVSYGTy2', 'customer', '2025-08-19 06:20:34', 0, NULL, 'pending'),
+(5, '', '', 'monk', 'monk@yahoo.com', '$2y$10$fMkQsIzak7CivpNkKMqG9OYhUosnXgiNKokLQOI2EYVBk7.09ckmC', 'customer', '2025-08-21 11:48:53', 0, NULL, 'pending'),
+(9, 'newest', 'tester', 'new west', 'newest@gmail.com', '$2y$10$DVf7LvZUmLntssxUA3oqne4FVVQ7aPXuzTBwAdR5bBZRc.PsuQ4x.', 'customer', '2025-09-29 06:32:33', 0, NULL, 'pending'),
+(16, 'Hanni', 'Pham', 'hanni', 'hanni@gmail.com', '$2y$10$uCYGdrDxh7OcO/h3lfOmj.NVhZysxET26W16yvkN3Kqmnqvyp7mXO', 'customer', '2025-10-22 06:24:23', 1, NULL, 'pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verifications`
+--
+
+CREATE TABLE `verifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `id_image` varchar(255) NOT NULL,
+  `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `verifications`
+--
+
+INSERT INTO `verifications` (`id`, `user_id`, `id_image`, `status`, `created_at`) VALUES
+(1, 2, 'valid_id_2_1761112791.jpg', 'Pending', '2025-10-22 05:59:51'),
+(8, 16, 'valid_id_16_1761114274.jpg', 'Approved', '2025-10-22 06:24:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `pet_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `wishlist`
+--
+
+INSERT INTO `wishlist` (`id`, `user_id`, `pet_id`, `created_at`) VALUES
+(6, 5, 15, '2025-09-21 07:01:13');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uniq_cart_item` (`user_id`,`product_id`),
+  ADD KEY `fk_cart_product` (`product_id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pet_id` (`pet_id`),
+  ADD KEY `sender_id` (`sender_id`),
+  ADD KEY `receiver_id` (`receiver_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_orders_user` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_items_order` (`order_id`),
+  ADD KEY `fk_items_product` (`product_id`);
+
+--
+-- Indexes for table `pets`
+--
+ALTER TABLE `pets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `pet_images`
+--
+ALTER TABLE `pet_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pet_id` (`pet_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `verifications`
+--
+ALTER TABLE `verifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`pet_id`),
+  ADD KEY `pet_id` (`pet_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pets`
+--
+ALTER TABLE `pets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `pet_images`
+--
+ALTER TABLE `pet_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `verifications`
+--
+ALTER TABLE `verifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_cart_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `fk_orders_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `fk_items_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_items_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `pets`
+--
+ALTER TABLE `pets`
+  ADD CONSTRAINT `pets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `pet_images`
+--
+ALTER TABLE `pet_images`
+  ADD CONSTRAINT `pet_images_ibfk_1` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `verifications`
+--
+ALTER TABLE `verifications`
+  ADD CONSTRAINT `verifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
